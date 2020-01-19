@@ -43,18 +43,26 @@ def play_game(game_number, game_name_dict, game_desc_dict, game_allowed_dict, ga
 # This is an error trapping function for checking the validity of the user input bet
 # bet must be able to be converted to an game_integer
 # bet must be less than money
+# bet must be greater than 0
+
 
 def check_bet(bet, money):
+	# test that bet is an integer
 	try: 
 		int_bet = int(bet)
+		# test that bet < money
 		if int_bet > money:
 			bet_message = "\nSorry, you do not have enough money."
+			valid_bet = False
+		#test that bet > 0
+		elif int_bet <= 0:
+			bet_message = "\nSorry, bets must be greater than zero."
 			valid_bet = False
 		else:
 			bet_message = ""
 			valid_bet = True
 	except:
-		bet_message = "\nSorry, this is not a valid bet."
+		bet_message = "\nSorry, please enter a whole number."
 		valid_bet = False
 		int_bet = 0
 
