@@ -24,7 +24,7 @@ def play_game(game_number, game_name_dict, game_desc_dict, game_allowed_dict, ga
 	# Ask user for a predicted value from the list of allowed values
 	predict = input("\nEnter your prediction, {}:".format(allowed_str))
 	# Validate the users input for predict and communicate about their prediction.
-	predict_message, valid_predict = check_predict(predict, game_allowed_dict[game_integer])
+	predict_message, valid_predict, predict = check_predict(predict, game_allowed_dict[game_integer])
 	print(predict_message)
 	# Tell user how much game money they have
 	print("\nYou currently have £{} game money".format(str(money)))
@@ -82,7 +82,7 @@ def check_predict(predict, allowed_values):
 	else:
 		valid_predict = False
 		predict_message += "\nSorry, this is not a valid prediction."
-	return predict_message, valid_predict
+	return predict_message, valid_predict, predict_lc
 
 """Code Academy specification for this function:
 Create a function that simulates flipping a coin and calling either "Heads" or "Tails". 
@@ -96,16 +96,16 @@ def game_1(bet, predict, money):
 	message = "You played Flip Coin.\n"
 	num = random.randint(1, 2)
 	if num == 1:
-		message += "The coin landed on Heads.\n"
-		if predict == "Heads":
+		message += "The coin landed on heads.\n"
+		if predict == "heads":
 			message += "You won £{}.\n".format(str(bet * 2))
 			money = money + (bet * 2)
 		else:
 			message += "You lost £{}.\n".format(str(bet))
 			money = money + (bet * -1)
 	else:
-		message += "The coin landed on Tails.\n" 
-		if predict == "Tails":
+		message += "The coin landed on tails.\n" 
+		if predict == "tails":
 			message += "You won £{}.\n".format(str(bet * 2))
 			money = money + (bet * 2)
 		else:
@@ -128,12 +128,12 @@ def game_2(bet, predict, money):
 	message += "Dice 1 rolled a {}\n".format(str(dice1))
 	message += "Dice 2 rolled a {}\n".format(str(dice2))
 	message += "The sum of the two dice is {}\n".format(str(sum_die))
-	if sum_die % 2 == 0 and predict == "Even":
-		message += "The sum of the two dice was Even.\n"
+	if sum_die % 2 == 0 and predict == "even":
+		message += "The sum of the two dice was even.\n"
 		message += "You won £{}.\n".format(str(bet * 2))
 		money = money + (bet * 2)
-	elif sum_die % 2 != 0 and predict == "Odd":
-		message += "The sum of the two dice was Odd.\n"
+	elif sum_die % 2 != 0 and predict == "odd":
+		message += "The sum of the two dice was odd.\n"
 		message += "You won £{}.\n".format(str(bet * 2))
 		money = money + (bet * 2)
 	else:
@@ -165,9 +165,9 @@ def game_3(bet, predict, money):
 	pack2_suit_name = suit_dict[pack2_suit_value]
 	message += "Your card is {} of {}.\n".format(str(pack1_card_name), str(pack1_suit_name))
 	message += "My card is {} of {}.\n".format(str(pack2_card_name), str(pack2_suit_name))
-	if predict == "Higher":
+	if predict == "higher":
 		if pack1_card_value > pack2_card_value:
-			message += "Your card is the Highest. \n"
+			message += "Your card is the highest. \n"
 			outcome = "won"
 			bet_multiplier = 2
 		elif pack1_card_value == pack2_card_value:
@@ -175,12 +175,12 @@ def game_3(bet, predict, money):
 			outcome = "neither"
 			bet_multiplier = 1
 		else:
-			message += "Your card is not the Highest.\n"	
+			message += "Your card is not the highest.\n"	
 			outcome = "lost"
 			bet_multiplier = -1
-	elif predict == "Lower":
+	elif predict == "lower":
 		if pack1_card_value < pack2_card_value:
-			message += "Your card is the Lowest. \n"
+			message += "Your card is the lowest. \n"
 			outcome = "won"
 			bet_multiplier = 2
 		elif pack1_card_value == pack2_card_value:
@@ -188,7 +188,7 @@ def game_3(bet, predict, money):
 			outcome = "neither won nor lost"
 			bet_multiplier = 1
 		else:
-			message += "Your card is not the Lowest.\n"	
+			message += "Your card is not the lowest.\n"	
 			outcome = "lost"
 			bet_multiplier = -1
 
@@ -221,21 +221,21 @@ def game_4(bet, predict, money):
 	# calculate whether the spin is even or odd.  
 	# 37 represents 0 and 38 represents 00
 	if spin == 37 or spin == 38:
-		spin_type = "Neither Odd or Even"
+		spin_type = "neither odd nor even"
 	elif (spin % 2) == 0: 
-		spin_type = "Even"
+		spin_type = "even"
 	else:
-		spin_type = "Odd"
+		spin_type = "odd"
 
 	# calculate whether the spin is red or black.  
 	# 37 represents 0 and 38 represents 00
 	red_numbers = [1, 36, 3, 34, 5, 32, 7, 30, 9, 14, 23, 16, 21, 18, 19, 12, 25, 27]
 	if spin == 37 or spin == 38:
-		spin_colour = "Green"
+		spin_colour = "green"
 	elif spin in red_numbers:
-		spin_colour = "Red"
+		spin_colour = "red"
 	else:
-		spin_colour = "Black"
+		spin_colour = "black"
 
 	#display what number the wheel landed on
 	if spin == 37:
@@ -247,18 +247,18 @@ def game_4(bet, predict, money):
 	message += "The number on the wheel was {}.\n".format(str(spin_name))
 
 	#for predict = Odd or Even, calculate if there is a win
-	if predict == "Odd" or predict == "Even":
+	if predict == "odd" or predict == "even":
 		message += "The number on the wheel was {}.\n".format(spin_type)
-		if (predict == "Odd" and spin_type == "Odd") or (predict == "Even" and spin_type == "Even"):
+		if (predict == "odd" and spin_type == "odd") or (predict == "even" and spin_type == "even"):
 			outcome = "won"
 			bet_multiplier = 2
 		else:
 			outcome = "lost"
 			bet_multiplier = -1
 	#for predict = Red or Black, calculate if there is a win 
-	elif predict == "Red" or predict == "Black":
+	elif predict == "red" or predict == "black":
 		message += "The number on the wheel was {}.\n".format(spin_colour)
-		if (predict == "Red" and spin_colour == "Red") or (predict == "Black" and spin_colour == "Black"):
+		if (predict == "red" and spin_colour == "red") or (predict == "black" and spin_colour == "black"):
 			outcome = "won"
 			bet_multiplier = 2
 		else:

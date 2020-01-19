@@ -19,7 +19,7 @@ import games as f1
 #This section contains dictionaries specifications for the games that can be played.
 
 game_name_dict = {1: "flip a coin", 2: "cho han", 3: "pick a card", 4: "roulette"}
-game_desc_dict = {1: "\nI will flip a coin.", 2: "\nI will roll two die and sum the values.", 3: "\nWe will each pick a card from the deck.", 4: "\nI will spin the roulette wheel."}
+game_desc_dict = {1: "\nI will flip a coin.", 2: "\nI will roll two die and sum the values.", 3: "\nWe will each pick a card from the deck.  Predict if your card will be higher or lower than mine.", 4: "\nI will spin the roulette wheel."}
 game_allowed_dict = {1: ["heads", "tails"], 2: ["odd", "even"], 3: ["higher", "lower"], 4: ["odd", "even", "red", "black", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "00"]} 
 game_call_dict = {1: f1.game_1, 2: f1.game_2, 3: f1.game_3, 4: f1.game_4}
 
