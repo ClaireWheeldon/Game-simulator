@@ -16,8 +16,13 @@ def games_menu():
 	game_call_dict = {1: game_1, 2: game_2, 3: game_3, 4: game_4}
 
 	# invite the user to play games 
+	first_time = True
 	while money > 0:
-		print("\nWe have {} games available".format(len(game_name_dict)))
+		if first_time:
+			print("\nWe have {} games available".format(len(game_name_dict)))
+		else:
+			print("\nLet's play another game")
+		first_time = False
 		for game_num, game_desc in game_name_dict.items():
 			print("{} - {}".format(str(game_num), game_desc))
 		game_number = input("\nEnter a number to play the game : ")
