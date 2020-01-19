@@ -8,6 +8,7 @@ Planned improvements for the future:
 Change error trapping for game_number so it allows for expansion of dictionaries offering new games
 Error trap for running out of money - currently allows debt
 Include a leader board
+Create an improved user interface
 Introduce a delay between each line of information appearing when the game is in play for added suspense!
 """
 

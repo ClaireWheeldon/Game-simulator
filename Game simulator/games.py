@@ -22,7 +22,7 @@ def games_menu():
 		if first_time:
 			print("\nWe have {} games available".format(len(game_name_dict)))
 		else:
-			new_game = validate_input_allowed_list("\nWould you like to play again? Enter Y or N :", ["Y", "N"])
+			new_game = validate_input_allowed_list("\nWould you like to play again? Enter Y or N :", ["y", "n"])
 			if new_game == "N":
 				print("Goodbye, thanks for playing")
 			else:
@@ -33,7 +33,7 @@ def games_menu():
 		first_time = False
 		money = play_game(game_number, game_name_dict, game_desc_dict, game_predict_desc_dict, game_predict_value_dict, game_call_dict, money)
 	print("\nGAME OVER - you have run out of money")
-	again = validate_input_allowed_list("\nWould you like to play again? Enter Y or N :", ["Y", "N"])
+	again = validate_input_allowed_list("\nWould you like to play again? Enter Y or N :", ["y", "n"])
 	if again == "Y":
 		money = 100
 		games_menu()
