@@ -26,9 +26,11 @@ def play_game(game_number, game_name_dict, game_desc_dict, game_allowed_dict, ga
 	# Validate the users input for predict and communicate about their prediction.
 	predict_message, valid_predict = check_predict(predict, game_allowed_dict[game_integer])
 	print(predict_message)
+	# Tell user how much game money they have
+	print("\nYou currently have £{} game money".format(str(money)))
 	# Ask user for their bet
 	if valid_predict:
-		bet = input("\nHow much do you want to bet? Please enter as an integer £")
+		bet = input("How much do you want to bet? Please enter as an integer £")
 		# Validate the users input for bet and communicate about their prediction.
 		bet_message, valid_bet, bet = check_bet(bet, money)
 		print(bet_message)
@@ -52,17 +54,17 @@ def check_bet(bet, money):
 		int_bet = int(bet)
 		# test that bet < money
 		if int_bet > money:
-			bet_message = "\nSorry, you do not have enough money."
+			bet_message = "Sorry, you do not have enough money."
 			valid_bet = False
 		#test that bet > 0
 		elif int_bet <= 0:
-			bet_message = "\nSorry, bets must be greater than zero."
+			bet_message = "Sorry, bets must be greater than zero."
 			valid_bet = False
 		else:
 			bet_message = ""
 			valid_bet = True
 	except:
-		bet_message = "\nSorry, please enter a whole number."
+		bet_message = "Sorry, please enter a whole number."
 		valid_bet = False
 		int_bet = 0
 
@@ -76,7 +78,7 @@ def check_predict(predict, allowed_values):
 	predict_message = ""
 	if predict_lc in allowed_values:
 		valid_predict = True
-		predict_message += "\nYou predicted {}.".format(predict)
+		predict_message += "You predicted {}.".format(predict)
 	else:
 		valid_predict = False
 		predict_message += "\nSorry, this is not a valid prediction."

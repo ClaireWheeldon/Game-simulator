@@ -29,7 +29,6 @@ money = 100
 # This section welcomes the user to the Card Game Simulator and tells them about their starting money
 
 print("Welcome to Card Game Simulator")
-print("\nYou currently have £{} game money".format(str(money)))
 
 # This section invites the user to choose which game to play, prints the results and updated the money variable.
 
