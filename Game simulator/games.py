@@ -2,10 +2,41 @@
 
 import random
 
-money = 100
+# this function inititalises the games menu and allows the user to choose a game
+def games_menu():
+	print("\nWelcome to Card Game Simulator")
 
-# This function allows the user to select which game to play.  
-# It then describes the game to the user.
+	# set initial value of money as £100
+	money = 100
+
+	#Set dictionary specifications for the games that can be played
+	game_name_dict = {1: "flip a coin", 2: "cho han", 3: "pick a card", 4: "roulette"}
+	game_desc_dict = {1: "\nI will flip a coin.", 2: "\nI will roll two die and sum the values.", 3: "\nWe will each pick a card from the deck.  Predict if your card will be higher or lower than mine.", 4: "\nI will spin the roulette wheel."}
+	game_allowed_dict = {1: ["heads", "tails"], 2: ["odd", "even"], 3: ["higher", "lower"], 4: ["odd", "even", "red", "black", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "00"]} 
+	game_call_dict = {1: game_1, 2: game_2, 3: game_3, 4: game_4}
+
+	# invite the user to play games 
+	while money > 0:
+		print("\nWe have {} games available".format(len(game_name_dict)))
+		for game_num, game_desc in game_name_dict.items():
+			print("{} - {}".format(str(game_num), game_desc))
+		game_number = input("\nEnter a number to play the game : ")
+		if game_number not in ("1", "2", "3", "4"):
+			print("Sorry, this is not a valid game number")
+		else:
+			money = play_game(game_number, game_name_dict, game_desc_dict, game_allowed_dict, game_call_dict, money)
+	print("\nGAME OVER - you have run out of money")
+	again = input("\nWould you like to play again? Enter Y or N :")
+	again = again.upper()
+	if again not in ("Y", "N"):
+		print("Sorry, this is not a valid answer")
+	elif again == "Y":
+		money = 100
+		games_menu()
+	else:
+		print("\nThanks for playing, goodbye.")
+
+# This function describes the game to the user.
 # It asks them to predict the outcome with error checking on their input.  
 # It allows them to place a bet on the game with error checking on their input.
 # It then calls the relevant game function to run the game
