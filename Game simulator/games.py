@@ -22,103 +22,78 @@ def games_menu():
 		if first_time:
 			print("\nWe have {} games available".format(len(game_name_dict)))
 		else:
-			print("\nLet's play another game")
-		first_time = False
+			new_game = validate_input_allowed_list("\nWould you like to play again? Enter Y or N :", ["Y", "N"])
+			if new_game == "N":
+				print("Goodbye, thanks for playing")
+			else:
+				print("\nLet's play again!")
 		for game_num, game_desc in game_name_dict.items():
 			print("{} - {}".format(str(game_num), game_desc))
-		game_number = input("\nEnter a number to play the game : ")
-		if game_number not in ("1", "2", "3", "4"):
-			print("Sorry, this is not a valid game number")
-		else:
-			money = play_game(game_number, game_name_dict, game_desc_dict, game_predict_desc_dict, game_predict_value_dict, game_call_dict, money)
+		game_number = validate_input_allowed_list("\nEnter a number to play the game : ", ["1", "2", "3", "4"])
+		first_time = False
+		money = play_game(game_number, game_name_dict, game_desc_dict, game_predict_desc_dict, game_predict_value_dict, game_call_dict, money)
 	print("\nGAME OVER - you have run out of money")
-	again = input("\nWould you like to play again? Enter Y or N :")
-	again = again.upper()
-	if again not in ("Y", "N"):
-		print("Sorry, this is not a valid answer")
-	elif again == "Y":
+	again = validate_input_allowed_list("\nWould you like to play again? Enter Y or N :", ["Y", "N"])
+	if again == "Y":
 		money = 100
 		games_menu()
 	else:
 		print("\nThanks for playing, goodbye.")
 
-# This function describes the game to the user.
-# It asks them to predict the outcome with error checking on their input.  
-# It allows them to place a bet on the game with error checking on their input.
-# It then calls the relevant game function to run the game
+# This function creates an input box and validates the value entered 
+# user input must be in the list of allowed values
+# returns the validated input
+def validate_input_allowed_list(prompt_message, allowed_values):
+	user_value = input(prompt_message)
+	user_value_lc = user_value.lower()
+	if user_value_lc in allowed_values:
+		return user_value
+	else:
+		print("Sorry this is not an option.")
+		return validate_input_allowed_list(prompt_message, allowed_values)
 
+# This function creates an input box and validates the value entered 
+# user input must be able to be converted to an integer
+# user input must be greater than minimum_value
+# user input must be less than or equal to maximum_value
+# returns the validated input
+def validate_input_range(prompt_message, minimum_value, maximum_value):
+	user_value = input(prompt_message)
+	try:
+		user_value_int = int(user_value)
+		if user_value_int > minimum_value and user_value_int <= maximum_value:
+			return user_value_int
+		else:
+			print("Sorry, your bet needs to be between {} and {}".format(minimum_value, maximum_value))
+			return validate_input_range(prompt_message, minimum_value, maximum_value)
+	except:
+		print("Sorry, please enter a whole number.")
+		return validate_input_range(prompt_message, minimum_value, maximum_value)
+
+""" This function describes the game to the user.
+ It asks them to predict the outcome with error checking on their input.  
+ It allows them to place a bet on the game with error checking on their input.
+ It then calls the relevant game function to run the game"""
 def play_game(game_number, game_name_dict, game_desc_dict, game_predict_desc_dict, game_predict_value_dict, game_call_dict, money):
 	game_integer = int(game_number)
-	# Describe game to user
 	print(game_desc_dict[game_integer])
-	# Create variable allowed_values to contain all allowed values for predict for this game
-	allowed_values = game_predict_value_dict[game_integer]
-	# Create a string describing the allowed values for predict
-	allowed_str = game_predict_desc_dict[game_integer]
-	# Ask user for a predicted value from the list of allowed values and validate their input
-	valid_predict = False
-	while valid_predict == False:
-		predict = input("Enter your prediction, {} :".format(allowed_str))
-		# Validate the users input for predict and communicate about their prediction.
-		predict_message, valid_predict, predict = check_predict(predict, game_predict_value_dict[game_integer])
-		print(predict_message)
-	# Tell user how much game money they have
+	# ask user to predict the outcome of the game
+	predict_values = game_predict_value_dict[game_integer]
+	predict_message = "Enter your prediction, {} :".format(game_predict_desc_dict[game_integer])
+	predict = validate_input_allowed_list(predict_message, predict_values)
+	# ask user for their bet
 	print("\nYou currently have £{} game money".format(str(money)))
-	# Ask user for their bet and validat their input
-	valid_bet = False
-	while valid_bet == False:
-		bet = input("How much do you want to bet? Please enter as an integer £")
-		# Validate the users input for bet and communicate about their prediction.
-		bet_message, valid_bet, bet = check_bet(bet, money)
-		print(bet_message)
+	bet_message = "How much do you want to bet? Please enter as an integer £"
+	bet_minimum = 0
+	bet_maximum = money
+	bet_type = "int"
+	bet = validate_input_range(bet_message, bet_minimum, bet_maximum)
 	# Play the game by calling the appropriate game function e.g. game_1 for Flip Coin
 	game_variables = game_call_dict[game_integer](bet, predict, money)
 	money, message = game_variables
 	print(message)
 	return money
 	
-# This is an error trapping function for checking the validity of the user input bet
-# bet must be able to be converted to an game_integer
-# bet must be less than money
-# bet must be greater than 0
-
-
-def check_bet(bet, money):
-	# test that bet is an integer
-	try: 
-		int_bet = int(bet)
-		# test that bet < money
-		if int_bet > money:
-			bet_message = "Sorry, you do not have enough money."
-			valid_bet = False
-		#test that bet > 0
-		elif int_bet <= 0:
-			bet_message = "Sorry, bets must be greater than zero."
-			valid_bet = False
-		else:
-			bet_message = ""
-			valid_bet = True
-	except:
-		bet_message = "Sorry, please enter a whole number."
-		valid_bet = False
-		int_bet = 0
-
-	return bet_message, valid_bet, int_bet
-
-# This is an error trapping funtion for checking the validity of the user input predict
-# predict can only take the value good1 of good2.
-
-def check_predict(predict, allowed_values):
-	predict_lc = predict.lower()
-	predict_message = ""
-	if predict_lc in allowed_values:
-		valid_predict = True
-		predict_message += "You predicted {}.".format(predict)
-	else:
-		valid_predict = False
-		predict_message += "Sorry, this is not a valid prediction."
-	return predict_message, valid_predict, predict_lc
-
 """Code Academy specification for this function:
 Create a function that simulates flipping a coin and calling either "Heads" or "Tails". 
 This function (along with all of the other functions you will write in this project) should have a parameter that represents 
@@ -126,9 +101,8 @@ how much the player is betting on the coin flip.
 This function should also have a parameter that lets the player call either "Heads" or "Tails".
 If the player wins the game, the function should return the amount that they won. 
 If the player loses the game, the function should return the amount that they lost as a negative number."""
-
 def game_1(bet, predict, money):
-	message = "You played Flip Coin.\n"
+	message = "\nYou played flip a coin.\n"
 	num = random.randint(1, 2)
 	if num == 1:
 		message += "The coin landed on heads.\n"
@@ -156,7 +130,7 @@ The function should have a parameter that allows for the player to guess whether
 The function should also have a parameter that allows the player to bet an amount of money on the game."""
 
 def game_2(bet, predict, money):
-	message = "You played Cho Han.\n"
+	message = "\nYou played cho han.\n"
 	dice1 = random.randint(1,6)
 	dice2 = random.randint(1,6)
 	sum_die = dice1 + dice2
@@ -187,7 +161,7 @@ What should be returned if there is a tie?
 Check the hint to see an additional challenge for this game. """
 
 def game_3(bet, predict, money):
-	message = "You played Pick a Card.\n"
+	message = "\nYou played pick a card.\n"
 	suit_dict = {1: "Hearts", 2: "Diamonds", 3: "Spades", 4: "Clubs"}
 	card_dict = {2: "a Two", 3: "a Three", 4: "a Four", 5: "a Five", 6: "a Six", 7: "a Seven", 8: "an Eight", 9: "a Nine", 10: "a Ten", 11: "a Jack", 12: "a Queen", 13: "a King", 14: "an Ace"}
 	pack1_card_value = random.randint(2,12)
@@ -244,7 +218,7 @@ Make sure to consider the different ways roulette rewards a win.
 Check the hint to see more about this!"""
 
 def game_4(bet, predict, money):
-	message = "You played Roulette.\n"
+	message = "\nYou played roulette.\n"
 	spin = random.randint(1,38)
 
 # convert predict of 0 or 00 to 37 or 38
