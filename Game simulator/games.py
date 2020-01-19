@@ -72,8 +72,9 @@ def check_bet(bet, money):
 # predict can only take the value good1 of good2.
 
 def check_predict(predict, allowed_values):
+	predict_lc = predict.lower()
 	predict_message = ""
-	if predict in allowed_values:
+	if predict_lc in allowed_values:
 		valid_predict = True
 		predict_message += "\nYou predicted {}.".format(predict)
 	else:
