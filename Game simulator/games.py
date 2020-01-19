@@ -28,18 +28,19 @@ def play_game(game_number, game_name_dict, game_desc_dict, game_allowed_dict, ga
 	print(predict_message)
 	# Tell user how much game money they have
 	print("\nYou currently have £{} game money".format(str(money)))
-	# Ask user for their bet
+	# If predict is valid ask user for their bet
 	if valid_predict:
-		bet = input("How much do you want to bet? Please enter as an integer £")
-		# Validate the users input for bet and communicate about their prediction.
-		bet_message, valid_bet, bet = check_bet(bet, money)
-		print(bet_message)
-		# If bet and predict are valid then play the game	
-		if valid_bet and valid_predict:
-			# call the appropriate game function e.g. game_1 for Flip Coin
-			game_variables = game_call_dict[game_integer](bet, predict, money)
-			money, message = game_variables
-			print(message)
+		valid_bet = False
+		while valid_bet == False:
+			bet = input("How much do you want to bet? Please enter as an integer £")
+			# Validate the users input for bet and communicate about their prediction.
+			bet_message, valid_bet, bet = check_bet(bet, money)
+			print(bet_message)
+		# If bet is valid then play the game	
+		# call the appropriate game function e.g. game_1 for Flip Coin
+		game_variables = game_call_dict[game_integer](bet, predict, money)
+		money, message = game_variables
+		print(message)
 	return money
 	
 # This is an error trapping function for checking the validity of the user input bet
