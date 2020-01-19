@@ -12,7 +12,8 @@ def games_menu():
 	#Set dictionary specifications for the games that can be played
 	game_name_dict = {1: "flip a coin", 2: "cho han", 3: "pick a card", 4: "roulette"}
 	game_desc_dict = {1: "\nI will flip a coin.", 2: "\nI will roll two die and sum the values.", 3: "\nWe will each pick a card from the deck.  Predict if your card will be higher or lower than mine.", 4: "\nI will spin the roulette wheel."}
-	game_allowed_dict = {1: ["heads", "tails"], 2: ["odd", "even"], 3: ["higher", "lower"], 4: ["odd", "even", "red", "black", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "00"]} 
+	game_predict_desc_dict = {1: "heads or tails", 2: "odd or even", 3: "higher or lower", 4: "odd or even, red or black, 0 to 36 or 00"}
+	game_predict_value_dict = {1: ["heads", "tails"], 2: ["odd", "even"], 3: ["higher", "lower"], 4: ["odd", "even", "red", "black", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "00"]} 
 	game_call_dict = {1: game_1, 2: game_2, 3: game_3, 4: game_4}
 
 	# invite the user to play games 
@@ -29,7 +30,7 @@ def games_menu():
 		if game_number not in ("1", "2", "3", "4"):
 			print("Sorry, this is not a valid game number")
 		else:
-			money = play_game(game_number, game_name_dict, game_desc_dict, game_allowed_dict, game_call_dict, money)
+			money = play_game(game_number, game_name_dict, game_desc_dict, game_predict_desc_dict, game_predict_value_dict, game_call_dict, money)
 	print("\nGAME OVER - you have run out of money")
 	again = input("\nWould you like to play again? Enter Y or N :")
 	again = again.upper()
@@ -46,23 +47,20 @@ def games_menu():
 # It allows them to place a bet on the game with error checking on their input.
 # It then calls the relevant game function to run the game
 
-def play_game(game_number, game_name_dict, game_desc_dict, game_allowed_dict, game_call_dict, money):
+def play_game(game_number, game_name_dict, game_desc_dict, game_predict_desc_dict, game_predict_value_dict, game_call_dict, money):
 	game_integer = int(game_number)
 	# Describe game to user
 	print(game_desc_dict[game_integer])
 	# Create variable allowed_values to contain all allowed values for predict for this game
-	allowed_values = game_allowed_dict[game_integer]
+	allowed_values = game_predict_value_dict[game_integer]
 	# Create a string describing the allowed values for predict
-	allowed_str = ""
-	for allowed in allowed_values:
-		allowed_str += allowed + " or "
-	allowed_str = allowed_str[0:-3]
+	allowed_str = game_predict_desc_dict[game_integer]
 	# Ask user for a predicted value from the list of allowed values and validate their input
 	valid_predict = False
 	while valid_predict == False:
-		predict = input("Enter your prediction, {}:".format(allowed_str))
+		predict = input("Enter your prediction, {} :".format(allowed_str))
 		# Validate the users input for predict and communicate about their prediction.
-		predict_message, valid_predict, predict = check_predict(predict, game_allowed_dict[game_integer])
+		predict_message, valid_predict, predict = check_predict(predict, game_predict_value_dict[game_integer])
 		print(predict_message)
 	# Tell user how much game money they have
 	print("\nYou currently have £{} game money".format(str(money)))
