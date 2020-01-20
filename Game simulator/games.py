@@ -34,7 +34,7 @@ def games_menu():
 		money = play_game(game_number, game_name_dict, game_desc_dict, game_predict_desc_dict, game_predict_value_dict, game_call_dict, money)
 	print("\nGAME OVER - you have run out of money")
 	again = validate_input_allowed_list("\nWould you like to play again? Enter Y or N :", ["y", "n"])
-	if again == "Y":
+	if again == "y":
 		money = 100
 		games_menu()
 	else:
@@ -47,7 +47,7 @@ def validate_input_allowed_list(prompt_message, allowed_values):
 	user_value = input(prompt_message)
 	user_value_lc = user_value.lower()
 	if user_value_lc in allowed_values:
-		return user_value
+		return user_value_lc
 	else:
 		print("Sorry this is not an option.")
 		return validate_input_allowed_list(prompt_message, allowed_values)
